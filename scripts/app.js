@@ -46,8 +46,8 @@ const updateUI = (data) => {
 
 
 const updateCity = async (city) => {
-  const cityData = await getCity(city);
-  const weather = await getWeather(cityData.Key);
+  const cityData = await getOpenCity(city);
+  const weather = await getOpenWeather(cityData);
 
 //   return {
 //     cityData: cityData,
