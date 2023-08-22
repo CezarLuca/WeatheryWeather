@@ -24,8 +24,8 @@ const updateUI = (data) => {
 
     
 
-    // let timeSrc =  weather.IsDayTime ? "img/day.png" : "img/night.png"; // !The Original Code
-    const timeSrc = `img/icons/${weather.WeatherIcon}.jpg`;
+    // let timeSrc =  weather.IsDayTime ? "img/day.png" : "img/night.png"; // The Original Code
+    const timeSrc = `img/${weather.WeatherIcon}.jpg`;
     // if (weather.IsDayTime) {
     //     timeSrc = "img/day.png";
     // } else {
