@@ -10,28 +10,33 @@ const getOpenCity = async (cityOpen) => {
   const responseOpenCity = await fetch(baseOpenCity + queryOpenCity);
   const dataOpenCity = await responseOpenCity.json();
 
-  console.log(dataOpenCity);
+  // console.log(dataOpenCity);
   // console.log(dataOpenCity[0].lat, dataOpenCity[0].lon);
-  let coords = [dataOpenCity[0].lat, dataOpenCity[0].lon];
-  coords = coords.map((coord) => coord.toFixed(2));
-  console.log(coords);
+  // let coords = [dataOpenCity[0].lat, dataOpenCity[0].lon];
+  // coords = coords.map((coord) => coord.toFixed(2));
+  // let coordsCity = coords;
+  // coordsCity.push(dataOpenCity[0].name);
+  
+  console.log(dataOpenCity[0]);
+  // console.log(coordsCity);
 
-  return coords;
+  // return coordsCity;
+  return dataOpenCity[0];
 };
 
 // get OpenWeather information
-const getOpenWeather = async (cityOpenData) => {
+const getOpenWeather = async (cityOpenDataLat,cityOpenDataLon) => {
   // might change to city or id
   const baseOpenW = "https://api.openweathermap.org/data/2.5/weather";
   // const queryOpenW = `${cityOpenData}?apikey=${openKey}`;
-  const queryOpenW = `?lat=${cityOpenData[0]}&lon=${cityOpenData[1]}&units=metric&appid=${openKey}`;
+  const queryOpenW = `?lat=${cityOpenDataLat}&lon=${cityOpenDataLon}&units=metric&appid=${openKey}`;
 
   const responseW = await fetch(baseOpenW + queryOpenW);
   const dataOpenW = await responseW.json();
 
   console.log(dataOpenW);
 
-  return dataOpenW[0];
+  return dataOpenW;
 };
 
 
@@ -63,14 +68,14 @@ const getOpenWeather = async (cityOpenData) => {
 //   return data[0];
 // };
 
-// getCity("Ansbach")
+// getOpenCity("Munchen")
 //   .then((data) => {
-//     return getWeather(data.Key);
+//     return getOpenWeather(data.lat, data.lon);
 //   })
 //   .then((data) => {
 //     console.log(data);
 //   })
 //   .catch((err) => console.log(err));
 
-// getWeather("Ansbach")
-// getWeather("167725");
+
+
