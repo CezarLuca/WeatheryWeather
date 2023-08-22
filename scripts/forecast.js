@@ -1,4 +1,4 @@
-const key = "Ad7DnqhsrAyBQvG1NYOHLNGyD5aYksOA";
+
 const openKey = "84e1eaba35d0a8c69ce21dac45a35668";
 
 // get OpenCity information
@@ -40,6 +40,7 @@ const getOpenWeather = async (cityOpenDataLat,cityOpenDataLon) => {
 };
 
 
+// const key = "Ad7DnqhsrAyBQvG1NYOHLNGyD5aYksOA";
 // // get weather information
 // const getWeather = async (cityData) => {
 //   // might change to city or id
