@@ -75,8 +75,36 @@
 // });
 
 const cityForm = document.querySelector("form");
+const card = document.querySelector(".card");
+const details = document.querySelector(".details");
+
+const updateUI = (data) => { // data is what is returned from the promise updateCity, which is the object {CityDetails: cityDets, Weather: weather}
+
+    // console.log(data);
+    // These have the same values as the ones in the updateCity function
+    const cityDets = data.CityDetails; // , so what is returned from the getOpenCity function
+    const weather = data.Weather; // , so what is returned from the getOpenWeather function
+    // BUT these are not the same constants though, because they are block scoped and exist only within their functions
+
+    // update details template
+    details.innerHTML = `
+    <h5 class="my-3">${cityDets.local_names.de}</h5>
+    <div class="my-3">${weather.weather[0].description}</div>
+    <div class="display-4 my-4">
+        <span>${weather.main.temp}</span>
+        <span>&deg;C</span>
+    </div>
+    `;
+
+    // remove the d-none class if present
+    if (card.classList.contains("d-none")) {
+        card.classList.remove("d-none");
+    }
+
+};
 
 cityForm.addEventListener("submit", (event) => {
+    // The event listener that triggers the whole script
 
     const updateCity = async (city) => {
         // console.log(city);
@@ -87,7 +115,8 @@ cityForm.addEventListener("submit", (event) => {
         return {
             CityDetails: cityDets,
             Weather: weather
-        };
+        }; // We return an object with the two properties CityDetails and Weather, which are the two constants cityDets and weather,
+        // that are respectively the results of the two functions getOpenCity and getOpenWeather
     };
 
 
@@ -100,7 +129,9 @@ cityForm.addEventListener("submit", (event) => {
 
     // Update the UI with new city
     updateCity(city)
-    .then(data => console.log(data))
+    // .then(data => console.log(data))
+    .then(data => updateUI(data))
     .catch(err => console.log(err));
+    // data is what is returned from the promise updateCity, which is the object {CityDetails: cityDets, Weather: weather}
 
 });

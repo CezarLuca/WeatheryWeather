@@ -29,7 +29,7 @@ const getOpenWeather = async (cityOpenDataLat,cityOpenDataLon) => {
   // might change to city or id
   const baseOpenW = "https://api.openweathermap.org/data/2.5/weather";
   // const queryOpenW = `${cityOpenData}?apikey=${openKey}`;
-  const queryOpenW = `?lat=${cityOpenDataLat}&lon=${cityOpenDataLon}&units=metric&appid=${openKey}`;
+  const queryOpenW = `?lat=${cityOpenDataLat}&lon=${cityOpenDataLon}&units=metric&lang=de&appid=${openKey}`;
 
   const responseW = await fetch(baseOpenW + queryOpenW);
   const dataOpenW = await responseW.json();
