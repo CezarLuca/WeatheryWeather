@@ -1,15 +1,51 @@
 const cityForm = document.querySelector("form");
 const card = document.querySelector(".card");
 const details = document.querySelector(".details");
+const time = document.querySelector("img.time");
+const icon = document.querySelector(".icon img");
 
-const updateUI = (data) => { // data is what is returned from the promise updateCity, which is the object {CityDetails: cityDets, Weather: weather}
+const updateUI = (data) => {
+  // data is what is returned from the promise updateCity, which is the object {CityDetails: cityDets, Weather: weather}
 
-    // console.log(data);
-    // These have the same values as the ones in the updateCity function
-    const cityDets = data.CityDetails; // , so what is returned from the getOpenCity function
-    const weather = data.Weather; // , so what is returned from the getOpenWeather function
-    // BUT these are not the same constants though, because they are block scoped and exist only within their functions
+  // console.log(data);
+  // These have the same values as the ones in the updateCity function
+  const cityDets = data.CityDetails; // , so what is returned from the getOpenCity function
+  const weather = data.Weather; // , so what is returned from the getOpenWeather function
+  // BUT these are not the same constants though, because they are block scoped and exist only within their functions
 
+  // Not all locations have local names, so we need to check if the property exists
+//   if (!('local_names' in cityDets)) {
+    if (!cityDets.hasOwnProperty('local_names') || !cityDets.local_names.hasOwnProperty('de')) {
+    // update details template
+    details.innerHTML = `
+    <h5 class="my-3">${cityDets.name}</h5>
+    <div class="my-3">${weather.weather[0].description}</div>
+    <div class="display-4 my-4">
+        <span>${weather.main.temp}</span>
+        <span>&deg;C</span>
+    </div>
+    `;
+//   } else if (cityDets.local_names.en === undefined) {
+//     // update details template
+//     details.innerHTML = `
+//     <h5 class="my-3">${cityDets.name}</h5>
+//     <div class="my-3">${weather.weather[0].description}</div>
+//     <div class="display-4 my-4">
+//         <span>${weather.main.temp}</span>
+//         <span>&deg;C</span>
+//     </div>
+//     `;
+//   } else if (cityDets.local_names.de === undefined) {
+//     // update details template
+//     details.innerHTML = `
+//     <h5 class="my-3">${cityDets.local_names}</h5>
+//     <div class="my-3">${weather.weather[0].description}</div>
+//     <div class="display-4 my-4">
+//         <span>${weather.main.temp}</span>
+//         <span>&deg;C</span>
+//     </div>
+//     `;
+  } else {
     // update details template
     details.innerHTML = `
     <h5 class="my-3">${cityDets.local_names.de}</h5>
@@ -19,45 +55,51 @@ const updateUI = (data) => { // data is what is returned from the promise update
         <span>&deg;C</span>
     </div>
     `;
+  }
 
-    // remove the d-none class if present
-    if (card.classList.contains("d-none")) {
-        card.classList.remove("d-none");
-    }
+  // update the images & icon
 
+  const timeSrc = `img/${weather.weather[0].icon}.jpg`;
+  time.setAttribute("src", timeSrc);
+
+  const iconSrc = `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`;
+  icon.setAttribute("src", iconSrc);
+
+  // remove the d-none class if present
+  if (card.classList.contains("d-none")) {
+    card.classList.remove("d-none");
+  }
 };
 
 cityForm.addEventListener("submit", (event) => {
-    // The event listener that triggers the whole script
+  // The event listener that triggers the whole script
 
-    const updateCity = async (city) => {
-        // console.log(city);
+  const updateCity = async (city) => {
+    // console.log(city);
 
-        const cityDets = await getOpenCity(city);
-        const weather = await getOpenWeather(cityDets.lat, cityDets.lon);
+    const cityDets = await getOpenCity(city);
+    const weather = await getOpenWeather(cityDets.lat, cityDets.lon);
 
-        return {
-            CityDetails: cityDets,
-            Weather: weather
-        }; // We return an object with the two properties CityDetails and Weather, which are the two constants cityDets and weather,
-        // that are respectively the results of the two functions getOpenCity and getOpenWeather
-    };
+    return {
+      CityDetails: cityDets,
+      Weather: weather,
+    }; // We return an object with the two properties CityDetails and Weather, which are the two constants cityDets and weather,
+    // that are respectively the results of the two functions getOpenCity and getOpenWeather
+  };
 
+  // Prevent default action
+  event.preventDefault();
 
-    // Prevent default action
-    event.preventDefault();
-    
-    // Get city value
-    const city = cityForm.city.value.trim();
-    cityForm.reset();
+  // Get city value
+  const city = cityForm.city.value.trim();
+  cityForm.reset();
 
-    // Update the UI with new city
-    updateCity(city)
+  // Update the UI with new city
+  updateCity(city)
     // .then(data => console.log(data))
-    .then(data => updateUI(data))
-    .catch(err => console.log(err));
-    // data is what is returned from the promise updateCity, which is the object {CityDetails: cityDets, Weather: weather}
-
+    .then((data) => updateUI(data))
+    .catch((err) => console.log(err));
+  // data is what is returned from the promise updateCity, which is the object {CityDetails: cityDets, Weather: weather}
 });
 
 // const cityForm = document.querySelector("form");
@@ -84,8 +126,6 @@ cityForm.addEventListener("submit", (event) => {
 
 //     // update the night/day & icon images
 
-    
-
 //     // let timeSrc =  weather.IsDayTime ? "img/day.png" : "img/night.png"; // The Original Code
 //     const timeSrc = `img/${weather.WeatherIcon}.jpg`;
 //     // if (weather.IsDayTime) {
@@ -103,9 +143,6 @@ cityForm.addEventListener("submit", (event) => {
 //         card.classList.remove("d-none");
 //     }
 // };
-
-
-
 
 // const updateCity = async (city) => {
 //   const cityData = await getOpenCity(city);
