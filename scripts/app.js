@@ -146,7 +146,7 @@ cityForm.addEventListener("submit", (event) => {
 
 // const updateCity = async (city) => {
 //   const cityData = await getOpenCity(city);
-//   const weather = await getOpenWeather(cityData);
+//   const weather = await getOpenWeather(cityData.key);
 
 //   return {
 //     cityData: cityData[2],
